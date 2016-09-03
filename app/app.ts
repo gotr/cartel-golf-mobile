@@ -10,11 +10,17 @@ import { HomePage } from './pages/home/home';
 })
 export class MyApp {
   rootPage: any = HomePage;
+  socket: any;
 
   constructor(public platform: Platform) {
     platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
+
+    // use a local server when in development
+    let host = platform.is('core') ?
+      'http://localhost:8080' : 'https://golfontherocks.com';
+      // socket represents the connection to the socket.io server
+      this.socket = io(host);
+
       StatusBar.styleDefault();
     });
   }
