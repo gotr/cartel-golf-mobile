@@ -13,7 +13,7 @@ import { NavController } from 'ionic-angular';
 export class SignupInvitePage {
 
   constructor(private navCtrl: NavController) {
-
+    
   }
 
 }

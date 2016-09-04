@@ -22,8 +22,8 @@ export class SplashPage {
     // if there's a user token load the realtime data
     this.dataPromise = new Promise(resolve => {
       this.localStorage.get('token').then(token => {
-        if (!token) {
-          this.realtimeData.load('abc123').then(data => {
+        if (token) {
+          this.realtimeData.load(token).then(data => {
             resolve(data);
           });
         } else {
@@ -46,7 +46,7 @@ export class SplashPage {
         console.log('move to rounds page');
       } else {
         // move to SignupInvite page
-        this.navCtrl.push(SignupInvitePage);
+        this.navCtrl.setRoot(SignupInvitePage);
       }
     });
 
