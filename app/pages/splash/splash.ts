@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { Storage, LocalStorage } from 'ionic-angular';
 import { RealtimeDataService } from '../../providers/realtime-data-service/realtime-data-service';
 
+import { TabsPage } from '../tabs/tabs';
 import { SignupInvitePage } from '../signup-invite/signup-invite';
 
 @Component({
@@ -22,7 +23,7 @@ export class SplashPage {
     // if there's a user token load the realtime data
     this.dataPromise = new Promise(resolve => {
       this.localStorage.get('token').then(token => {
-        if (token) {
+        if (!token) {
           this.realtimeData.load(token).then(data => {
             resolve(data);
           });
@@ -40,12 +41,12 @@ export class SplashPage {
     });
 
     Promise.all([this.splashPromise, this.dataPromise]).then(ret => {
+      // check if we have data
       if (ret[1]) {
-        console.log(ret[1]);
-        // move to Rounds page
-        console.log('move to rounds page');
+        // move to TabsPage, which defaults to the rounds tab
+        this.navCtrl.setRoot(TabsPage);
       } else {
-        // move to SignupInvite page
+        // move to SignupInvitePage
         this.navCtrl.setRoot(SignupInvitePage);
       }
     });
