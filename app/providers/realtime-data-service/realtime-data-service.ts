@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 export class RealtimeDataService {
   data: any;
   socket: any;
-  userToken: String;
+  userToken: string;
   resolver: Function = null;
 
   constructor(public platform: Platform) {
@@ -29,7 +29,7 @@ export class RealtimeDataService {
     });
   }
 
-  load(token: String): Promise<Object> {
+  load(token: string): Promise<Object> {
     this.userToken = token;
     // data has already been initialized   
     if (this.data) return Promise.resolve(this.data);
