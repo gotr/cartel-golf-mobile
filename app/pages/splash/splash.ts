@@ -1,31 +1,53 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Storage, LocalStorage } from 'ionic-angular';
+import { RealtimeDataService } from '../../providers/realtime-data-service/realtime-data-service';
+
 
 @Component({
   templateUrl: 'build/pages/splash/splash.html'
 })
 export class SplashPage {
-  local: Storage = new Storage(LocalStorage);
+  localStorage: Storage = new Storage(LocalStorage);
   token: any;
-  minSplashTime: Number = 5000;
-  p1: Promise<any>;
-  p2: Promise<any>;
+  splashTime: Number = 4000;
+  splashPromise: Promise<any>;
+  dataPromise: Promise<any>;
 
-  constructor(public navCtrl: NavController) {
-    // grab user's token from localstorage
-    this.local.get('token')
-    .then(token => {
-      console.log(token)
-      
+  constructor(public navCtrl: NavController, public realtimeData: RealtimeDataService) {}
+
+  ionViewWillEnter() {
+
+    // if there's a user token load the realtime data
+    this.dataPromise = new Promise(resolve => {
+      this.localStorage.get('token').then(token => {
+        if (token) {
+          this.realtimeData.load('abc123').then(data => {
+            resolve(data);
+          });
+        } else {
+          resolve(null);
+        }
+      });
     });
 
-    this.p1 = new Promise((resolve, reject) => {
+    // show splash for a min amount of time
+    this.splashPromise = new Promise(resolve => {
       setTimeout(() => {
-        console.log('time to change view');
         resolve();
-      }, this.minSplashTime);
+      }, this.splashTime);
+    });
+
+    Promise.all([this.splashPromise, this.dataPromise]).then(ret => {
+      if (ret[1]) {
+        // move to rounds page
+        console.log('move to rounds page');
+      } else {
+        // move to registerInvite page
+        console.log('move to registerInvite page');
+      }
     });
 
   }
+
 }
