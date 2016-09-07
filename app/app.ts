@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { ionicBootstrap, Platform } from 'ionic-angular';
 import { StatusBar } from 'ionic-native';
-import { RealtimeDataService } from './providers/realtime-data-service/realtime-data-service';
 
-import { SplashPage } from './pages/splash/splash';
+import {provideStore} from '@ngrx/store';
+import {RoundActions} from './state/actions/round-actions';
+import {RoundsReducer} from './state/reducers/rounds-reducer';
+
+import {RealtimeDataService} from './providers/realtime-data-service/realtime-data-service';
+import {SplashPage} from './pages/splash/splash';
 
 
 @Component({
@@ -19,4 +23,8 @@ export class MyApp {
   }
 }
 
-ionicBootstrap(MyApp, [RealtimeDataService]);
+ionicBootstrap(MyApp, [
+  RealtimeDataService,
+  provideStore({rounds: RoundsReducer}),
+  RoundActions
+]);
