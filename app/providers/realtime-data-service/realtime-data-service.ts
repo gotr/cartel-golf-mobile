@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Platform } from 'ionic-angular';
-
 import 'rxjs/add/operator/map';
+
+import messageTypes from './message-types';
 
 @Injectable()
 export class RealtimeDataService {
