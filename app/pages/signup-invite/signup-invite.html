@@ -14,5 +14,22 @@
 
 
 <ion-content padding>
-  <p>Please enter the code given to you by a member of a cartel.</p>
+
+  <ion-card padding>
+    <p class="text-justify">To join a cartel, you must enter an invite code provided to you by one of the cartel's existing members:</p>
+    <br/>
+    <form [formGroup]="tokenForm" (ngSubmit)="onSubmit(tokenForm)">
+        <ion-item>
+            <ion-label floating>Invite Code</ion-label>
+            <ion-input type="text" value="" formControlName="tokenInput" required ></ion-input>         
+        </ion-item>
+        <br/> 
+        <ion-item>
+          <button type="submit" [disabled]="!tokenForm.valid" outline item-right>Join</button>
+        </ion-item>
+    </form>
+
+  </ion-card>
+
+
 </ion-content>
