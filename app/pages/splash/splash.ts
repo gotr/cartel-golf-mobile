@@ -1,31 +1,43 @@
 import { Component } from '@angular/core';
+import { Http, Response } from '@angular/http';
 import { NavController } from 'ionic-angular';
 import { Storage, LocalStorage } from 'ionic-angular';
-import { RealtimeDataService } from '../../providers/realtime-data-service/realtime-data-service';
 
 import { TabsPage } from '../tabs/tabs';
 import { SignupInvitePage } from '../signup-invite/signup-invite';
+import constants from '../../common/constants';
 
 @Component({
   templateUrl: 'build/pages/splash/splash.html'
 })
 export class SplashPage {
   localStorage: Storage = new Storage(LocalStorage);
-  token: any;
-  splashTime: Number = 4000;
+  token: string;
+  splashTime: number = 4000;
   splashPromise: Promise<any>;
-  dataPromise: Promise<any>;
+  signinPromise: Promise<any>;
 
-  constructor(public navCtrl: NavController, public realtimeData: RealtimeDataService) {}
+  constructor(public navCtrl: NavController, public http: Http) {}
 
   ionViewWillEnter() {
-
     // if there's a user token load the realtime data
-    this.dataPromise = new Promise(resolve => {
+    this.signinPromise = new Promise(resolve => {
       this.localStorage.get('token').then(token => {
-        if (!token) {
-          this.realtimeData.load(token).then(data => {
-            resolve(data);
+
+
+// debugging
+// token = '57d0aac88331f209548940e0'
+
+        if (token) {
+          this.http.post(constants.HOST + '/api/signin', {
+            token: token
+          }).subscribe( (res: Response) => {
+            let data = res.json();
+            // data will contain
+            //    - rounds[Round]
+            //    - nickname
+            //    - cartelName
+            resolve(true);
           });
         } else {
           resolve(null);
@@ -40,7 +52,7 @@ export class SplashPage {
       }, this.splashTime);
     });
 
-    Promise.all([this.splashPromise, this.dataPromise]).then(ret => {
+    Promise.all([this.splashPromise, this.signinPromise]).then(ret => {
       // check if we have data
       if (ret[1]) {
         // move to TabsPage, which defaults to the rounds tab

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms'
 
-import {RealtimeDataService} from '../../providers/realtime-data-service/realtime-data-service';
+// import {RealtimeDataService} from '../../providers/realtime-data-service/realtime-data-service';
 
 /*
   Generated class for the SignupInvitePage page.
