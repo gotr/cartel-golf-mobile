@@ -19,7 +19,7 @@ export class SignupInvitePage {
 
   constructor(private navCtrl: NavController, private formBuilder: FormBuilder) {
     this.tokenForm = formBuilder.group({  
-      'tokenInput': ['', Validators.compose([Validators.required, Validators.minLength(16), Validators.maxLength(16)])]
+      'tokenInput': ['', Validators.compose([Validators.required, Validators.minLength(24), Validators.maxLength(24)])]
     });
   }
 
